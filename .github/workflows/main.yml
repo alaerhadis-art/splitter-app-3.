@@ -29,12 +29,20 @@ jobs:
 
       - name: Accept Android SDK licenses
         run: |
-          yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | sdkmanager --licenses || true
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
 
       - name: Build APK
         run: |
-          export PATH="$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:$PATH"
           buildozer -v android debug
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
+          PATH: /home/runner/.buildozer/android/platform/android-sdk/tools/bin:/home/runner/.buildozer/android/platform/android-sdk/platform-tools:/home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin:$PATH
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
